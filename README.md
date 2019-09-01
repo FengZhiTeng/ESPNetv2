@@ -1,3 +1,10 @@
+
+Command->
+
+CUDA_VISIBLE_DEVICES=0 python train_segmentation.py --model espnetv2 --s 2.0 --dataset sample --data_path /home/aditya/EdgeNets/data_loader/segmentation/sample_dataset/ --batch-size 25 --crop_size 512 256 --model espnetv2 --s 1.5 --lr 0.009 --scheduler hybrid --clr-max 61 --epochs 100
+
+
+
 # Efficient networks for Computer Vision
 
 This repo contains source code of our work on designing efficient networks for different computer vision tasks: <span style="color:blue"> (1) Image classification, (2) Object detection, and (3) Semantic segmentation.</span>
