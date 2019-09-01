@@ -14,13 +14,17 @@ This is a (untested) sample file for supporting custom datasets
 '''
 
 # let us assume that custom dataset has two classes, "Person" and "Background". Background is everything except persons
-CUSTOM_DATASET_CLASS_LIST = ['background', 'person']
+#CUSTOM_DATASET_CLASS_LIST = ['background', 'person']
+classes={'road':0,'sidewalk':1,'non-drivable':2,'person':3,'animal':4,'rider':5,'motorcycle':6,'bicycle':7,'rickshaw':8,'car':9,
+        'truck':10,'bus':11,'train':12,'curb':13,'wall':14,'fence':15,'billboard':16,'traffic sign':17,'traffic light':18,
+         'pole':19,'poles':20,'fallback':21,
+        'building':22,'bridge':23,'vegetation':24,'sky':25,'background':26,'unlabelled':27}
 
+#root="/home/aditya/EdgeNets/data_loader/segmentation/sample_dataset"
+class NvidiaSegmentationDataset(data.Dataset):
 
-class CustomSegmentationDataset(torch.utils.data.Dataset):
-
-    def __init__(self, root, train=True, scale=(0.5, 1.0), crop_size=(513, 513), ignore_idx=255, debug_labels=True):
-        super(CustomSegmentationDataset, self).__init__()
+    def __init__(self, root, train=True, scale=(0.25, 0.5), crop_size=(512, 512), ignore_idx=255, debug_labels=True):
+        super(NvidiaSegmentationDataset, self).__init__()
         # let us assume that you have data directory set-up like this
         # + vision_datasets
         # +++++ train.txt // each line in this file contains mapping about RGB image and mask image <image1.jpg>, <image1.png>
@@ -46,13 +50,15 @@ class CustomSegmentationDataset(torch.utils.data.Dataset):
             for line in lines:
                 # line is a comma separated file that contains mapping between RGB image and mask image
                 # <image1.jpg>, <image1.png>
+                line_split=line.split(",")
                 rgb_img_loc = rgb_root_dir + os.sep + line.split()[0]
                 label_img_loc = label_root_dir + os.sep + line.split()[1]
                 assert os.path.isfile(rgb_img_loc)
                 assert os.path.isfile(label_img_loc)
                 self.images.append(rgb_img_loc)
+                self.masks.append(label_image_loc)
 
-                if debug_labels:
+                '''if debug_labels:
                     # let us also check that label file only contain labels as listed in CUSTOM_DATASET_CLASS_LIST
                     label_img = Image.open(label_img_loc)
                     label_img = np.asarray(label_img)
@@ -60,11 +66,23 @@ class CustomSegmentationDataset(torch.utils.data.Dataset):
                     min_val = np.min(unique_values)
                     max_val = np.max(unique_values)
                     assert 0 <= min_val <= max_val < len(
-                        CUSTOM_DATASET_CLASS_LIST), "Label image at {} has following values. " \
+                        classes), "Label image at {} has following values. " \
                                                     "However, it should contain values only between 0 " \
                                                     "and {}".format(unique_values.tolist(),
-                                                                    len(CUSTOM_DATASET_CLASS_LIST) - 1)
-                self.masks.append(label_img_loc)
+                                                                    len(classes) - 1)'''
+                #self.masks.append(label_img_loc)
+        
+        #If you want to use coarse data for training        
+        '''if train and coarse and os.path.isfile(coarse_data_file):
+            with open(coarse_data_file, 'r') as lines:
+                for line in lines:
+                    line_split = line.split(',')
+                    rgb_img_loc = root + os.sep + line_split[0].rstrip()
+                    label_img_loc = root + os.sep + line_split[1].rstrip()
+                    assert os.path.isfile(rgb_img_loc)
+                    assert os.path.isfile(label_img_loc)
+                    self.images.append(rgb_img_loc)
+                    self.masks.append(label_img_loc)'''
 
         if isinstance(crop_size, tuple):
             self.crop_size = crop_size

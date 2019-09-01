@@ -36,7 +36,8 @@ class ESPNetv2Segmentation(nn.Module):
         dec_feat_dict={
             'pascal': 16,
             'city': 16,
-            'coco': 32
+            'coco': 32,
+	    'sample':16,
         }
         base_dec_planes = dec_feat_dict[dataset]
         dec_planes = [4*base_dec_planes, 3*base_dec_planes, 2*base_dec_planes, classes]

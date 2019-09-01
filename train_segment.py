@@ -38,12 +38,14 @@ def main(args):
         class_wts = torch.ones(seg_classes)
 
     elif args.dataset == 'sample':
-        from data_loader.segmentation.custom_dataset_loader import NvidiaSegmentationDataset,classes
+        from data_loader.segmentation.sample_dataset import NvidiaSegmentationDataset,classes
         
-        train_dataset = NvidiaSegmentationDataset(root=args.data_path, train=True, crop_size=crop_size, scale=args.scale)
-        val_dataset = NvidiaSegmentationDataset(root=args.data_path, train=False, crop_size=crop_size, scale=args.scale)
+        train_dataset = NvidiaSegmentationDataset(root=args.data_path, train=True, size=crop_size, scale=args.scale,
+                                               coarse=args.coarse)
+        val_dataset = NvidiaSegmentationDataset(root=args.data_path, train=False, size=crop_size, scale=args.scale,
+                                             coarse=False)
         seg_classes = len(classes)
-        class_wts = torch.ones(seg_classes)
+
 
     elif args.dataset == 'city':
 
@@ -53,7 +55,6 @@ def main(args):
         val_dataset = CityscapesSegmentation(root=args.data_path, train=False, size=crop_size, scale=args.scale,
                                              coarse=False)
         seg_classes = len(CITYSCAPE_CLASS_LIST)
-
         class_wts = torch.ones(seg_classes)
         class_wts[0] = 2.8149201869965
         class_wts[1] = 6.9850029945374
@@ -260,7 +261,7 @@ if __name__ == "__main__":
 
     # dataset and result directories
     parser.add_argument('--dataset', type=str, default='sample', choices=segmentation_datasets, help='Datasets')
-    parser.add_argument('--data_path', type=str, default='', help='dataset path')
+    parser.add_argument('--data-path', type=str, default='', help='dataset path')
     parser.add_argument('--coco-path', type=str, default='', help='MS COCO dataset path')
     parser.add_argument('--savedir', type=str, default='./results_segmentation', help='Location to save the results')
     ## only for cityscapes
@@ -286,7 +287,7 @@ if __name__ == "__main__":
 
     # input details
     parser.add_argument('--batch-size', type=int, default=40, help='list of batch sizes')
-    parser.add_argument('--crop_size', type=int, nargs='+', default=[256, 256],
+    parser.add_argument('--crop-size', type=int, nargs='+', default=[256, 256],
                         help='list of image crop sizes, with each item storing the crop size (should be a tuple).')
     parser.add_argument('--loss-type', default='ce', choices=segmentation_loss_fns, help='Loss function (ce or miou)')
 
@@ -308,18 +309,6 @@ if __name__ == "__main__":
 
     #if args.dataset == 'pascal':
         #args.scale = (0.5, 2.0)
-
-    if args.dataset=='sample':
-        if args.crop_size[0] == 512:
-            args.scale = (0.25, 0.5)
-        elif args.crop_size[0] == 1024:
-            args.scale = (0.35, 1.0)  # 0.75 # 0.5 -- 59+
-        elif args.crop_size[0] == 2048:
-            args.scale = (1.0, 2.0)
-        else:
-            print_error_message('Select image size from 512x256, 1024x512, 2048x1024')
-        print_log_message('Using scale = ({}, {})'.format(args.scale[0], args.scale[1]))
-
     elif args.dataset == 'city':
         if args.crop_size[0] == 512:
             args.scale = (0.25, 0.5)
@@ -332,7 +321,6 @@ if __name__ == "__main__":
         print_log_message('Using scale = ({}, {})'.format(args.scale[0], args.scale[1]))
     else:
         print_error_message('{} dataset not yet supported'.format(args.dataset))
-
 
     if not args.finetune:
         from model.weight_locations.classification import model_weight_map
@@ -353,3 +341,4 @@ if __name__ == "__main__":
                                                                          args.scheduler,
                                                                          args.loss_type, args.crop_size[0], args.scale[0], args.scale[1], timestr)
     main(args)
+

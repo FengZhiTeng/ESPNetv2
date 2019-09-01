@@ -1,0 +1,12 @@
+The folder output contains the sample set of images to be provided as input to the Semantic Segmentation
+model.
+The folder output contains the sample set of images to be provided as output to the Semantic Segmentation
+model during training.
+The files in output are actually the argmax of the 3-D tensor (h,w,num_classes) coming out of the model
+when that specific input is presented to the model.
+Total number of classes are 28 which include (car, road, sidewalk, traffic-light, traffic-sign etc).
+
+Dataset size including input and output images (>1.5GB)
+
+A script is also attached which shows about reading an image and visualizing individual 
+ classes(for o/p images).
