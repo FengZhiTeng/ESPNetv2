@@ -161,7 +161,7 @@ def main(args):
             from utilities.parallel_wrapper import DataParallelModel, DataParallelCriteria
             model = DataParallelModel(model)
             model = model.cuda()
-            criterion = DataParallelCriteria(criterion)
+            # criterion = DataParallelCriteria(criterion)
             criterion = criterion.cuda()
 
         if torch.backends.cudnn.is_available():

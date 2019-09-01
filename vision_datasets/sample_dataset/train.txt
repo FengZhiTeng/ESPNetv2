@@ -1,2 +1,2 @@
-<758070_leftImg8bit.png>,
-<758070_gtFine_polygons_labelTrainIds.png>
+758070_leftImg8bit.png 758070_gtFine_polygons_labelTrainIds.png
+803190_leftImg8bit.png 803190_gtFine_polygons_labelTrainIds.png

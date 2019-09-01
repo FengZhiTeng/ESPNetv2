@@ -35,8 +35,8 @@ class NvidiaSegmentationDataset(data.Dataset):
         # +++++ annotations // This directory contains segmentation mask images
         # +++++++++ image1.png
         # +++++++++ image2.png
-
-        rgb_root_dir = os.path.join(root, 'images')
+	print("List: ", list)
+        rgb_root_dir = os.pah.join(root, 'images')
         label_root_dir = os.path.join(root, 'annotations')
         self.train = train
         if self.train:
@@ -46,20 +46,17 @@ class NvidiaSegmentationDataset(data.Dataset):
 
         self.images = []
         self.masks = []
-        print("Data file:", data_file)
         with open(data_file, 'r') as lines:
             for line in lines:
                 # line is a comma separated file that contains mapping between RGB image and mask image
                 # <image1.jpg>, <image1.png>
                 # line_split=line.split(",")
-                print("line: ", line)
                 rgb_img_loc = rgb_root_dir + os.sep + line.split()[0]
                 label_img_loc = label_root_dir + os.sep + line.split()[1]
-                print("Img loc:", rgb_img_loc)
                 assert os.path.isfile(rgb_img_loc)
                 assert os.path.isfile(label_img_loc)
                 self.images.append(rgb_img_loc)
-                self.masks.append(label_img_loc)
+                self.masks.append(label_image_loc)
 
                 '''if debug_labels:
                     # let us also check that label file only contain labels as listed in CUSTOM_DATASET_CLASS_LIST
