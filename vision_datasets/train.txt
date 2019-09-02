@@ -1,1 +1,6 @@
 <758070_leftImg8bit.png>,<758070_gtFine_polygons_labelTrainIds.png>
+<803190_leftImg8bit.png>,<803190_gtFine_polygons_labelTrainIds.png>
+<847051_leftImg8bit.png>,<847051_gtFine_polygons_labelTrainIds.png>
+<877850_leftImg8bit.png>,<877850_gtFine_polygons_labelTrainIds.png>
+<920004_leftImg8bit.png>,<920004_gtFine_polygons_labelTrainIds.png>
+<928063_leftImg8bit.png>,<928063_gtFine_polygons_labelTrainIds.png>
