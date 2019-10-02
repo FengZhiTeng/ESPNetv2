@@ -22,8 +22,8 @@ class MIOU(object):
         if target.device == torch.device('cuda'):
             target = target.cpu()
 
-        pred = pred.type(torch.BoolTensor)
-        target = target.type(torch.BoolTensor)
+        pred = pred.type(torch.ByteTensor)
+        target = target.type(torch.ByteTensor)
 
         # shift by 1 so that 255 is 0
         pred += 1

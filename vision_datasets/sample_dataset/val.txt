@@ -1,1 +1,0 @@
-758070_leftImg8bit.png 758070_gtFine_polygons_labelTrainIds_gray.png

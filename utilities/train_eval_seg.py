@@ -21,8 +21,6 @@ def train_seg(model, dataset_loader, optimizer, criterion, num_classes, epoch, d
     miou_class = MIOU(num_classes=num_classes)
 
     for i, (inputs, target) in enumerate(dataset_loader):
-        print("### Input shape:", inputs.shape)
-        print("### Target shape:", target.shape)
         inputs = inputs.to(device=device)
         target = target.to(device=device)
 
@@ -42,10 +40,9 @@ def train_seg(model, dataset_loader, optimizer, criterion, num_classes, epoch, d
         union_meter.update(union)
 
         losses.update(loss.item(), inputs.size(0))
-
-        optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+        optimizer.zero_grad()
 
         # measure elapsed time
         batch_time.update(time.time() - end)
